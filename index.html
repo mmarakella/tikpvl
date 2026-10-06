@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Учет вручения пригласительных | Павлодарская область</title>
+  <style>
+    :root {
+      --primary: #005f73;
+      --primary-dark: #0a4350;
+      --accent: #0a9396;
+      --bg: #f4f7f9;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --text-muted: #6c757d;
+      --border: #e2e8f0;
+      --success: #2a9d8f;
+      --warning: #d4a737;
+      --danger: #e76f51;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+      padding-bottom: 50px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .header-top {
+      max-width: 1050px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-title h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .logo-title p {
+      font-size: 0.72rem;
+      opacity: 0.88;
+      margin-top: 2px;
+    }
+
+    .uik-badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 5px 10px;
+      border-radius: 8px;
+      text-align: right;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .main-wrapper {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 820px) {
+      .main-wrapper {
+        grid-template-columns: 1fr 340px;
+        align-items: start;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .stat-item {
+      padding: 8px 4px;
+      border-radius: 8px;
+      text-align: center;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+    }
+
+    .stat-item.total { border-bottom: 3px solid var(--primary); }
+    .stat-item.delivered { border-bottom: 3px solid var(--success); }
+    .stat-item.missing { border-bottom: 3px solid var(--warning); }
+    .stat-item.refused { border-bottom: 3px solid var(--danger); }
+
+    .stat-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .progress-bar-wrap {
+      height: 10px;
+      background: #e9ecef;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      margin-top: 8px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      transition: width 0.3s;
+    }
+
+    .bg-success { background-color: var(--success); }
+    .bg-warning { background-color: var(--warning); }
+    .bg-danger { background-color: var(--danger); }
+
+    .form-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.small {
+      flex: 0 0 100px;
+    }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 0.95rem;
+      outline: none;
+      background-color: #fff;
+      color: var(--text);
+    }
+
+    input {
+      height: 44px;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      resize: vertical;
+      min-height: 65px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(10, 147, 150, 0.18);
+    }
+
+    .counts-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 10px;
+      margin-bottom: 12px;
+    }
+
+    .count-input-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+
+    .count-input-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .count-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .count-field {
+      width: 90px;
+      height: 40px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* ЗАМЕТКИ ВО ВСЮ ШИРИНУ БЛОКА */
+    .notes-box {
+      background: #fbfcfe;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag-btn {
+      padding: 6px 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.74rem;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .tag-btn.active {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0369a1;
+    }
+
+    .btn-save {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--primary);
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: 0.1s;
+    }
+
+    .btn-save:active {
+      transform: scale(0.99);
+      background: var(--primary-dark);
+    }
+
+    .btn-save.editing-mode {
+      background: #ca6702;
+    }
+
+    .btn-toolbar {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .btn-tool {
+      flex: 1;
+      padding: 9px 4px;
+      font-size: 0.76rem;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .edit-notice {
+      display: none;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .filter-tab {
+      flex: 1;
+      padding: 8px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .filter-tab.debt-tab.active {
+      background: var(--warning);
+      color: #212529;
+      border-color: #d4a737;
+    }
+
+    .debt-badge-counter {
+      background: rgba(0,0,0,0.12);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+    }
+
+    .log-list {
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .log-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .log-item.has-debt {
+      border-left: 4px solid var(--warning);
+      background: #fffdf5;
+    }
+
+    .log-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .log-left { flex: 1; min-width: 0; }
+
+    .log-address {
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .log-details {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .log-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .note-pill {
+      font-size: 0.68rem;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .badge-debt-tag {
+      background: #fff3cd;
+      color: #856404;
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-icon {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #6c757d;
+      cursor: pointer;
+      padding: 6px 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn-icon:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .btn-icon.delete:hover {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    /* БЫСТРЫЕ КНОПКИ ПОГАШЕНИЯ ДОЛГА */
+    .debt-resolve-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #e2e8f0;
+      margin-top: 2px;
+    }
+
+    .btn-resolve-step {
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      color: #2e7d32;
+      border-radius: 6px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-resolve-step:active {
+      background: #c8e6c9;
+    }
+
+    .btn-resolve-all {
+      background: #f1f8e9;
+      border: 1px solid #dcedc8;
+      color: #33691e;
+      border-radius: 6px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-resolve-all:active {
+      background: #dcedc8;
+    }
+
+    .top-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .top-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .top-rank {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .top-rank.rank-1 { background: #ffd700; color: #78350f; }
+    .top-rank.rank-2 { background: #e2e8f0; color: #334155; }
+    .top-rank.rank-3 { background: #fbd38d; color: #7c2d12; }
+
+    .top-info { flex: 1; min-width: 0; }
+
+    .top-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .top-score {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .top-score-num {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--success);
+      line-height: 1.1;
+    }
+
+    .top-score-label {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 15px;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .region-auto-badge {
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+    }
+
+    .region-auto-badge.not-found {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="logo-title">
+        <h1>САЙЛАУ • ПАВЛОДАРСКАЯ ОБЛАСТЬ</h1>
+        <p id="sub-header-region">Учет вручения пригласительных</p>
+      </div>
+      <div class="uik-badge" onclick="openAuthModal(false)">
+        <span id="badge-uik">УИК №---</span><br>
+        <span id="badge-user" style="font-weight: 700;">Вход</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+
+    <div class="left-col">
+
+      <div class="card">
+        <div class="card-title">
+          <span>Итоги обхода</span>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn-tool" style="padding: 4px 8px;" onclick="generateReport()">📋 Сводка</button>
+            <button class="btn-tool" style="padding: 4px 8px; background: #fff3cd; color: #856404; border-color: #ffeeba;" onclick="generateDebtReport()">⚠️ Долги</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item total">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">Всего бланков</div>
+          </div>
+          <div class="stat-item delivered">
+            <div class="stat-num" style="color: var(--success);" id="stat-delivered">0</div>
+            <div class="stat-label">В руки</div>
+          </div>
+          <div class="stat-item missing">
+            <div class="stat-num" style="color: var(--warning);" id="stat-missing">0</div>
+            <div class="stat-label">Не было</div>
+          </div>
+          <div class="stat-item refused">
+            <div class="stat-num" style="color: var(--danger);" id="stat-refused">0</div>
+            <div class="stat-label">Отказ</div>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill bg-success" id="bar-delivered" style="width: 0%"></div>
+          <div class="progress-bar-fill bg-warning" id="bar-missing" style="width: 0%"></div>
+          <div class="progress-bar-fill bg-danger" id="bar-refused" style="width: 0%"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-top: 4px;">
+          <span id="rate-delivered">Вручено: 0%</span>
+          <span id="rate-missing">Не было: 0%</span>
+          <span id="rate-refused">Отказ: 0%</span>
+        </div>
+      </div>
+
+      <div class="card" id="form-card">
+        <div class="card-title">
+          <span id="form-title">Внесение данных по дому / объекту</span>
+        </div>
+
+        <div class="edit-notice" id="edit-notice">
+          <span>✏️ Редактирование записи</span>
+          <button style="background:none;border:none;color:#856404;font-weight:700;cursor:pointer;" onclick="cancelEdit()">Отменить</button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Улица / Микрорайон / Село</label>
+            <input type="text" id="input-street" placeholder="ул. Торайгырова">
+          </div>
+          <div class="form-group small">
+            <label>Номер дома</label>
+            <input type="text" id="input-house" placeholder="45">
+          </div>
+        </div>
+
+        <div class="counts-box">
+          <div class="count-input-group">
+            <span class="count-label" style="color: var(--success);">
+              🤝 Вручено лично в руки:
+            </span>
+            <input type="number" min="0" class="count-field" id="count-delivered" placeholder="0">
+          </div>
+
+          <div class="count-input-group">
+            <span class="count-label" style="color: var(--warning);">
+              🚪 Не было дома (не открыли):
+            </span>
+            <input type="number" min="0" class="count-field" id="count-missing" placeholder="0">
+          </div>
+
+          <div class="count-input-group">
+            <span class="count-label" style="color: var(--danger);">
+              🚫 Отказ от получения:
+            </span>
+            <input type="number" min="0" class="count-field" id="count-refused" placeholder="0">
+          </div>
+        </div>
+
+        <!-- ЗАМЕТКИ ВО ВСЮ ШИРИНУ БЛОКА -->
+        <div class="notes-box">
+          <label style="margin-bottom: 6px; display: block;">🏷️ Быстрые отметки по дому / участку:</label>
+          <div class="quick-tags">
+            <button type="button" class="tag-btn" onclick="toggleTag(this, '🚪 Нет домофона')">🚪 Нет домофона</button>
+            <button type="button" class="tag-btn" onclick="toggleTag(this, '🐕 Злая собака')">🐕 Злая собака</button>
+            <button type="button" class="tag-btn" onclick="toggleTag(this, '🏗️ Новостройка')">🏗️ Новостройка</button>
+            <button type="button" class="tag-btn" onclick="toggleTag(this, '🔒 Шлагбаум/Охрана')">🔒 Шлагбаум/Охрана</button>
+            <button type="button" class="tag-btn" onclick="toggleTag(this, '⚠️ Спецобъект')">⚠️ Спецобъект</button>
+          </div>
+          <label style="margin-bottom: 4px; display: block;">Дополнительная заметка:</label>
+          <textarea id="input-note" placeholder="Код домофона, удобное время повторного визита, контакты старшего по дому..."></textarea>
+        </div>
+
+        <button type="button" class="btn-save" id="btn-submit" onclick="saveHouseData()">💾 СОХРАНИТЬ ПО ДОМУ</button>
+
+        <div class="btn-toolbar">
+          <button type="button" class="btn-tool" onclick="exportToCSV()">📥 Экспорт в Excel (CSV)</button>
+          <button type="button" class="btn-tool" onclick="clearForm()">🧹 Очистить поля</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Реестр домов</span>
+          <span id="house-counter" style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">0 домов</span>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-tab active" id="tab-all" onclick="setListFilter('all')">
+            🏠 Все дома
+          </button>
+          <button class="filter-tab debt-tab" id="tab-debt" onclick="setListFilter('debt')">
+            ⚠️ Повторный обход (Долги)
+            <span class="debt-badge-counter" id="debt-count-badge">0</span>
+          </button>
+        </div>
+
+        <input type="text" id="search-input" placeholder="🔍 Поиск по адресу, номеру дома или заметке..." oninput="renderLogs()" style="width: 100%; margin-bottom: 8px; height: 38px; font-size: 0.85rem;">
+
+        <div class="log-list" id="log-container">
+          <div class="empty-state">Нет внесенных данных по домам.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right-col">
+      <div class="card" style="position: sticky; top: 78px;">
+        <div class="card-title">
+          <span>🏆 Топ-5 по вручению в руки</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: normal;">Лидеры</span>
+        </div>
+
+        <div class="top-list" id="top-container">
+          <div class="empty-state">Пока нет данных для рейтинга.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 4px; color: var(--primary); font-size: 1.1rem;">Авторизация участкового</h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Введите ваше ФИО и номер УИК</p>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label>ФИО члена комиссии / участкового</label>
+        <input type="text" id="auth-name" placeholder="Фамилия Имя Отчество">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label>Номер участка (УИК)</label>
+        <input type="number" id="auth-uik" placeholder="Например: 52" oninput="onUikInput()">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <div class="region-auto-badge" id="auth-region-display">
+          <span>📍</span> <span id="auth-region-text">Введите номер УИК</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-save" style="flex: 2; padding: 12px;" onclick="saveAuth()">Войти в систему</button>
+        <button class="btn-tool" id="btn-cancel-auth" style="flex: 1; display: none;" onclick="closeAuthModal()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const UIK_DATABASE = {
+      ...generateRange(1, 105, 'город Павлодар'),
+      ...generateRange(107, 114, 'город Павлодар'),
+      ...generateRange(116, 121, 'город Павлодар'),
+      ...generateRange(125, 134, 'город Павлодар'),
+      ...generateRange(580, 588, 'город Павлодар'),
+      ...generateRange(595, 596, 'город Павлодар'),
+
+      ...generateRange(513, 555, 'город Экибастуз'),
+      ...generateRange(557, 559, 'город Экибастуз'),
+      ...generateRange(562, 577, 'город Экибастуз'),
+      ...generateRange(589, 591, 'город Экибастуз'),
+
+      ...generateRange(474, 506, 'город Аксу'),
+      ...generateRange(508, 512, 'город Аксу'),
+      ...generateRange(578, 578, 'город Аксу'),
+      ...generateRange(597, 597, 'город Аксу'),
+
+      ...generateRange(325, 347, 'район Аққулы'),
+      349: 'район Аққулы',
+
+      135: 'Актогайский район', 136: 'Актогайский район', 137: 'Актогайский район',
+      139: 'Актогайский район', 140: 'Актогайский район', 141: 'Актогайский район',
+      142: 'Актогайский район', 144: 'Актогайский район', 145: 'Актогайский район',
+      146: 'Актогайский район', 147: 'Актогайский район', 148: 'Актогайский район',
+      149: 'Актогайский район', 150: 'Актогайский район', 151: 'Актогайский район',
+      152: 'Актогайский район', 154: 'Актогайский район', 155: 'Актогайский район',
+      156: 'Актогайский район', 157: 'Актогайский район', 158: 'Актогайский район',
+      159: 'Актогайский район', 161: 'Актогайский район', 163: 'Актогайский район',
+      164: 'Актогайский район', 165: 'Актогайский район', 167: 'Актогайский район',
+      168: 'Актогайский район',
+
+      ...generateRange(172, 201, 'Баянаульский район'),
+      ...generateRange(203, 211, 'Баянаульский район'),
+
+      ...generateRange(212, 218, 'Железинский район'),
+      ...generateRange(221, 238, 'Железинский район'),
+      ...generateRange(241, 243, 'Железинский район'),
+      ...generateRange(245, 246, 'Железинский район'),
+      ...generateRange(249, 251, 'Железинский район'),
+
+      ...generateRange(252, 257, 'Иртышский район'),
+      ...generateRange(259, 261, 'Иртышский район'),
+      263: 'Иртышский район',
+      ...generateRange(265, 267, 'Иртышский район'),
+      269: 'Иртышский район',
+      ...generateRange(271, 283, 'Иртышский район'),
+
+      ...generateRange(352, 354, 'Майский район'),
+      ...generateRange(356, 361, 'Майский район'),
+      363: 'Майский район', 365: 'Майский район', 368: 'Майский район',
+      372: 'Майский район', 375: 'Майский район', 592: 'Майский район', 593: 'Майский район',
+
+      ...generateRange(376, 383, 'Павлодарский район'),
+      ...generateRange(385, 394, 'Павлодарский район'),
+      ...generateRange(396, 397, 'Павлодарский район'),
+      ...generateRange(401, 410, 'Павлодарский район'),
+
+      ...generateRange(284, 294, 'район Тереңкөл'),
+      ...generateRange(296, 297, 'район Тереңкөл'),
+      ...generateRange(299, 301, 'район Тереңкөл'),
+      ...generateRange(303, 306, 'район Тереңкөл'),
+      308: 'район Тереңкөл', 311: 'район Тереңкөл', 312: 'район Тереңкөл',
+      314: 'район Тереңкөл', 315: 'район Тереңкөл', 317: 'район Тереңкөл',
+      ...generateRange(319, 321, 'район Тереңкөл'),
+      323: 'район Тереңкөл', 594: 'район Тереңкөл',
+
+      ...generateRange(412, 414, 'Успенский район'),
+      ...generateRange(416, 419, 'Успенский район'),
+      ...generateRange(421, 434, 'Успенский район'),
+      436: 'Успенский район', 579: 'Успенский район',
+
+      ...generateRange(437, 442, 'Щербактинский район'),
+      ...generateRange(445, 448, 'Щербактинский район'),
+      ...generateRange(451, 455, 'Щербактинский район'),
+      ...generateRange(458, 459, 'Щербактинский район'),
+      ...generateRange(461, 466, 'Щербактинский район'),
+      469: 'Щербактинский район', 472: 'Щербактинский район', 473: 'Щербактинский район'
+    };
+
+    function generateRange(from, to, region) {
+      const obj = {};
+      for (let i = from; i <= to; i++) obj[i] = region;
+      return obj;
+    }
+
+    const PERMANENT_STORAGE = 'saylau_permanent_db_v1';
+    const PERMANENT_AUTH = 'saylau_permanent_auth_v1';
+
+    let records = [];
+    let currentUser = { name: '', uik: '', region: '' };
+    let editingId = null;
+    let currentListMode = 'all';
+    let selectedTags = [];
+
+    function init() {
+      restoreOldData();
+      restoreProfile();
+
+      const lastStreet = localStorage.getItem('saylau_last_street_name');
+      if (lastStreet) document.getElementById('input-street').value = lastStreet;
+
+      updateStats();
+      renderLogs();
+      renderTop5();
+    }
+
+    function restoreOldData() {
+      const keysToCheck = [
+        PERMANENT_STORAGE,
+        'saylau_houses_records_pvl_v5',
+        'saylau_houses_records_pvl_v4',
+        'saylau_houses_records_pvl_v3',
+        'saylau_houses_records_pvl_v2',
+        'saylau_houses_summary_v1'
+      ];
+
+      const mergedMap = new Map();
+
+      keysToCheck.forEach(k => {
+        const val = localStorage.getItem(k);
+        if (val) {
+          try {
+            const arr = JSON.parse(val);
+            if (Array.isArray(arr)) {
+              arr.forEach(item => {
+                if (item && item.id) {
+                  mergedMap.set(item.id, item);
+                }
+              });
+            }
+          } catch (e) {}
+        }
+      });
+
+      records = Array.from(mergedMap.values()).sort((a,b) => b.id - a.id);
+      localStorage.setItem(PERMANENT_STORAGE, JSON.stringify(records));
+    }
+
+    function restoreProfile() {
+      const authKeys = [
+        PERMANENT_AUTH,
+        'saylau_houses_auth_pvl_v5',
+        'saylau_houses_auth_pvl_v4',
+        'saylau_houses_auth_pvl_v3',
+        'saylau_houses_auth_pvl_v2',
+        'saylau_houses_profile_v1'
+      ];
+
+      for (let k of authKeys) {
+        const val = localStorage.getItem(k);
+        if (val) {
+          try {
+            const p = JSON.parse(val);
+            if (p && (p.uik || p.name)) {
+              currentUser = {
+                name: p.name || '',
+                uik: p.uik || '',
+                region: p.region || UIK_DATABASE[p.uik] || 'Павлодарская область'
+              };
+              localStorage.setItem(PERMANENT_AUTH, JSON.stringify(currentUser));
+              updateHeaderDisplay();
+              return;
+            }
+          } catch(e) {}
+        }
+      }
+      openAuthModal(true);
+    }
+
+    function onUikInput() {
+      const uikVal = parseInt(document.getElementById('auth-uik').value, 10);
+      const regBox = document.getElementById('auth-region-display');
+      const regText = document.getElementById('auth-region-text');
+
+      if (!uikVal) {
+        regBox.classList.remove('not-found');
+        regText.innerText = 'Введите номер УИК';
+        return;
+      }
+
+      if (UIK_DATABASE[uikVal]) {
+        regBox.classList.remove('not-found');
+        regText.innerHTML = `<strong>${UIK_DATABASE[uikVal]}</strong>`;
+      } else {
+        regBox.classList.add('not-found');
+        regText.innerHTML = `⚠️ УИК №${uikVal} не найден в Павлодарской области`;
+      }
+    }
+
+    function openAuthModal(isForced = false) {
+      document.getElementById('auth-name').value = currentUser.name || '';
+      document.getElementById('auth-uik').value = currentUser.uik || '';
+      onUikInput();
+
+      const cancelBtn = document.getElementById('btn-cancel-auth');
+      if (isForced || !currentUser.uik) {
+        cancelBtn.style.display = 'none';
+      } else {
+        cancelBtn.style.display = 'block';
+      }
+
+      document.getElementById('auth-modal').classList.add('active');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.remove('active');
+    }
+
+    function saveAuth() {
+      const name = document.getElementById('auth-name').value.trim();
+      const uik = parseInt(document.getElementById('auth-uik').value, 10);
+
+      if (!name) {
+        alert('Пожалуйста, введите ваше ФИО!');
+        return;
+      }
+
+      if (!uik || !UIK_DATABASE[uik]) {
+        alert('Пожалуйста, укажите корректный номер УИК Павлодарской области!');
+        return;
+      }
+
+      currentUser = {
+        name: name,
+        uik: uik,
+        region: UIK_DATABASE[uik]
+      };
+
+      localStorage.setItem(PERMANENT_AUTH, JSON.stringify(currentUser));
+      updateHeaderDisplay();
+      closeAuthModal();
+      updateStats();
+      renderLogs();
+      renderTop5();
+    }
+
+    function updateHeaderDisplay() {
+      if (currentUser.uik) {
+        document.getElementById('badge-uik').innerText = `УИК №${currentUser.uik}`;
+        document.getElementById('badge-user').innerText = currentUser.name;
+        document.getElementById('sub-header-region').innerText = `${currentUser.region} • УИК №${currentUser.uik}`;
+      } else {
+        document.getElementById('badge-uik').innerText = 'УИК №---';
+        document.getElementById('badge-user').innerText = 'Вход';
+        document.getElementById('sub-header-region').innerText = 'Павлодарская область';
+      }
+    }
+
+    function toggleTag(btn, tagName) {
+      btn.classList.toggle('active');
+      if (selectedTags.includes(tagName)) {
+        selectedTags = selectedTags.filter(t => t !== tagName);
+      } else {
+        selectedTags.push(tagName);
+      }
+    }
+
+    function saveHouseData() {
+      if (!currentUser.uik) {
+        alert('Сначала выполните вход и укажите ваш УИК!');
+        openAuthModal(true);
+        return;
+      }
+
+      const street = document.getElementById('input-street').value.trim();
+      const house = document.getElementById('input-house').value.trim();
+      const delivered = parseInt(document.getElementById('count-delivered').value, 10) || 0;
+      const missing = parseInt(document.getElementById('count-missing').value, 10) || 0;
+      const refused = parseInt(document.getElementById('count-refused').value, 10) || 0;
+      const note = document.getElementById('input-note').value.trim();
+
+      if (!street || !house) {
+        alert('Укажите улицу (село) и номер дома!');
+        return;
+      }
+
+      if (delivered === 0 && missing === 0 && refused === 0) {
+        alert('Заполните хотя бы одно поле по количеству пригласительных!');
+        return;
+      }
+
+      const totalHouse = delivered + missing + refused;
+
+      if (editingId) {
+        const index = records.findIndex(r => r.id === editingId);
+        if (index !== -1) {
+          records[index].street = street;
+          records[index].house = house;
+          records[index].delivered = delivered;
+          records[index].missing = missing;
+          records[index].refused = refused;
+          records[index].total = totalHouse;
+          records[index].tags = [...selectedTags];
+          records[index].note = note;
+        }
+        cancelEdit();
+      } else {
+        const record = {
+          id: Date.now(),
+          region: currentUser.region,
+          uik: currentUser.uik,
+          agent: currentUser.name,
+          street,
+          house,
+          delivered,
+          missing,
+          refused,
+          total: totalHouse,
+          tags: [...selectedTags],
+          note: note,
+          date: new Date().toLocaleDateString('ru-RU'),
+          time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+        };
+        records.unshift(record);
+        clearInputsOnly();
+      }
+
+      saveData();
+      localStorage.setItem('saylau_last_street_name', street);
+      updateStats();
+      renderLogs();
+      renderTop5();
+    }
+
+    function clearInputsOnly() {
+      document.getElementById('input-house').value = '';
+      document.getElementById('count-delivered').value = '';
+      document.getElementById('count-missing').value = '';
+      document.getElementById('count-refused').value = '';
+      document.getElementById('input-note').value = '';
+      selectedTags = [];
+      document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    function startEdit(id) {
+      const record = records.find(r => r.id === id);
+      if (!record) return;
+
+      editingId = id;
+      document.getElementById('input-street').value = record.street;
+      document.getElementById('input-house').value = record.house;
+      document.getElementById('count-delivered').value = record.delivered || '';
+      document.getElementById('count-missing').value = record.missing || '';
+      document.getElementById('count-refused').value = record.refused || '';
+      document.getElementById('input-note').value = record.note || '';
+
+      selectedTags = record.tags ? [...record.tags] : [];
+      document.querySelectorAll('.tag-btn').forEach(btn => {
+        const tagText = btn.textContent.trim();
+        btn.classList.toggle('active', selectedTags.includes(tagText));
+      });
+
+      document.getElementById('form-title').innerText = 'Редактирование данных по дому';
+      document.getElementById('edit-notice').style.display = 'flex';
+      const submitBtn = document.getElementById('btn-submit');
+      submitBtn.innerText = '🔄 ОБНОВИТЬ ДАННЫЕ ПО ДОМУ';
+      submitBtn.classList.add('editing-mode');
+
+      document.getElementById('form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelEdit() {
+      editingId = null;
+      document.getElementById('form-title').innerText = 'Внесение данных по дому / объекту';
+      document.getElementById('edit-notice').style.display = 'none';
+      const submitBtn = document.getElementById('btn-submit');
+      submitBtn.innerText = '💾 СОХРАНИТЬ ПО ДОМУ';
+      submitBtn.classList.remove('editing-mode');
+
+      clearInputsOnly();
+    }
+
+    function deleteRecord(id) {
+      if (editingId === id) cancelEdit();
+      if (confirm('Удалить данные по этому дому?')) {
+        records = records.filter(r => r.id !== id);
+        saveData();
+        updateStats();
+        renderLogs();
+        renderTop5();
+      }
+    }
+
+    /* ФУНКЦИИ БЫСТРОГО ПОГАШЕНИЯ ДОЛГОВ В 1 КЛИК */
+    function resolveDebtOne(id) {
+      const rec = records.find(r => r.id === id);
+      if (!rec || rec.missing <= 0) return;
+
+      rec.missing -= 1;
+      rec.delivered += 1;
+      saveData();
+      updateStats();
+      renderLogs();
+      renderTop5();
+    }
+
+    function resolveDebtAll(id) {
+      const rec = records.find(r => r.id === id);
+      if (!rec || rec.missing <= 0) return;
+
+      rec.delivered += rec.missing;
+      rec.missing = 0;
+      saveData();
+      updateStats();
+      renderLogs();
+      renderTop5();
+    }
+
+    function setListFilter(mode) {
+      currentListMode = mode;
+      document.getElementById('tab-all').classList.toggle('active', mode === 'all');
+      document.getElementById('tab-debt').classList.toggle('active', mode === 'debt');
+      renderLogs();
+    }
+
+    function updateStats() {
+      const currentUikRecords = currentUser.uik ? records.filter(r => r.uik == currentUser.uik) : records;
+
+      const totalDelivered = currentUikRecords.reduce((sum, r) => sum + r.delivered, 0);
+      const totalMissing = currentUikRecords.reduce((sum, r) => sum + r.missing, 0);
+      const totalRefused = currentUikRecords.reduce((sum, r) => sum + r.refused, 0);
+      const grandTotal = totalDelivered + totalMissing + totalRefused;
+
+      document.getElementById('stat-total').innerText = grandTotal;
+      document.getElementById('stat-delivered').innerText = totalDelivered;
+      document.getElementById('stat-missing').innerText = totalMissing;
+      document.getElementById('stat-refused').innerText = totalRefused;
+
+      const pDelivered = grandTotal > 0 ? Math.round((totalDelivered / grandTotal) * 100) : 0;
+      const pMissing = grandTotal > 0 ? Math.round((totalMissing / grandTotal) * 100) : 0;
+      const pRefused = grandTotal > 0 ? Math.round((totalRefused / grandTotal) * 100) : 0;
+
+      document.getElementById('bar-delivered').style.width = pDelivered + '%';
+      document.getElementById('bar-missing').style.width = pMissing + '%';
+      document.getElementById('bar-refused').style.width = pRefused + '%';
+
+      document.getElementById('rate-delivered').innerText = `Вручено: ${pDelivered}%`;
+      document.getElementById('rate-missing').innerText = `Не было: ${pMissing}%`;
+      document.getElementById('rate-refused').innerText = `Отказ: ${pRefused}%`;
+
+      const debtHousesCount = currentUikRecords.filter(r => (r.missing || 0) > 0).length;
+      document.getElementById('debt-count-badge').innerText = debtHousesCount;
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('log-container');
+      const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+
+      let filtered = currentUser.uik ? records.filter(r => r.uik == currentUser.uik) : records;
+
+      if (currentListMode === 'debt') {
+        filtered = filtered.filter(r => (r.missing || 0) > 0);
+      }
+
+      if (searchQuery) {
+        filtered = filtered.filter(r => 
+          r.street.toLowerCase().includes(searchQuery) ||
+          r.house.toLowerCase().includes(searchQuery) ||
+          (r.note && r.note.toLowerCase().includes(searchQuery)) ||
+          (r.tags && r.tags.some(t => t.toLowerCase().includes(searchQuery)))
+        );
+      }
+
+      document.getElementById('house-counter').innerText = `${filtered.length} домов`;
+
+      if (filtered.length === 0) {
+        if (currentListMode === 'debt') {
+          container.innerHTML = '<div class="empty-state">🎉 Долгов нет! Все дома охвачены.</div>';
+        } else {
+          container.innerHTML = '<div class="empty-state">Нет данных для отображения</div>';
+        }
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => {
+        const hasDebt = (r.missing || 0) > 0;
+        const tagsHtml = (r.tags && r.tags.length > 0) 
+          ? r.tags.map(t => `<span class="note-pill">${t}</span>`).join('') 
+          : '';
+        const noteHtml = r.note ? `<span class="note-pill" style="background:#f1f5f9;color:#0f172a;">💬 ${r.note}</span>` : '';
+
+        return `
+          <div class="log-item ${hasDebt ? 'has-debt' : ''}">
+            <div class="log-header-row">
+              <div class="log-left">
+                <div class="log-address">
+                  ул. ${r.street}, д. ${r.house}
+                  ${hasDebt ? `<span class="badge-debt-tag">Долг: ${r.missing}</span>` : ''}
+                </div>
+                <div class="log-details">
+                  <span>Итого: <strong>${r.total}</strong></span>
+                  <span style="color: var(--success);">• Вручено: ${r.delivered}</span>
+                  <span style="color: var(--warning);">• Не было: ${r.missing}</span>
+                  <span style="color: var(--danger);">• Отказ: ${r.refused}</span>
+                </div>
+                ${(tagsHtml || noteHtml) ? `<div class="log-tags-row">${tagsHtml}${noteHtml}</div>` : ''}
+              </div>
+              <div class="item-actions">
+                <button class="btn-icon" title="Редактировать" onclick="startEdit(${r.id})">✏️</button>
+                <button class="btn-icon delete" title="Удалить" onclick="deleteRecord(${r.id})">✕</button>
+              </div>
+            </div>
+
+            ${hasDebt ? `
+              <div class="debt-resolve-bar">
+                <button class="btn-resolve-step" onclick="resolveDebtOne(${r.id})">
+                  🤝 +1 Вручено
+                </button>
+                <button class="btn-resolve-all" onclick="resolveDebtAll(${r.id})">
+                  ✓ Закрыть все (${r.missing})
+                </button>
+                <span style="font-size: 0.68rem; color: var(--text-muted); margin-left: auto;">Быстрое погашение</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderTop5() {
+      const topContainer = document.getElementById('top-container');
+
+      const statsMap = {};
+      records.forEach(r => {
+        const key = `${r.uik}___${r.agent}___${r.region}`;
+        if (!statsMap[key]) {
+          statsMap[key] = {
+            uik: r.uik,
+            agent: r.agent,
+            region: r.region,
+            delivered: 0,
+            houses: 0
+          };
+        }
+        statsMap[key].delivered += (r.delivered || 0);
+        statsMap[key].houses += 1;
+      });
+
+      const leaderArray = Object.values(statsMap)
+        .filter(item => item.delivered > 0)
+        .sort((a, b) => b.delivered - a.delivered)
+        .slice(0, 5);
+
+      if (leaderArray.length === 0) {
+        topContainer.innerHTML = '<div class="empty-state">Пока нет данных для рейтинга.</div>';
+        return;
+      }
+
+      topContainer.innerHTML = leaderArray.map((item, index) => {
+        const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
+        const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : `${index + 1}`));
+
+        return `
+          <div class="top-item">
+            <div class="top-rank ${rankClass}">${medal}</div>
+            <div class="top-info">
+              <div class="top-name">${item.agent}</div>
+              <div class="top-meta">УИК №${item.uik} • ${item.region}</div>
+            </div>
+            <div class="top-score">
+              <div class="top-score-num">${item.delivered}</div>
+              <div class="top-score-label">в руки</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function clearForm() {
+      if (editingId) cancelEdit();
+      document.getElementById('input-street').value = '';
+      document.getElementById('input-house').value = '';
+      clearInputsOnly();
+    }
+
+    function saveData() {
+      localStorage.setItem(PERMANENT_STORAGE, JSON.stringify(records));
+    }
+
+    function generateReport() {
+      const currentUikRecords = currentUser.uik ? records.filter(r => r.uik == currentUser.uik) : records;
+      const grandTotal = currentUikRecords.reduce((s, r) => s + r.total, 0);
+
+      if (grandTotal === 0) {
+        alert('Данных для рапорта по вашему участку пока нет!');
+        return;
+      }
+
+      const del = currentUikRecords.reduce((s, r) => s + r.delivered, 0);
+      const mis = currentUikRecords.reduce((s, r) => s + r.missing, 0);
+      const ref = currentUikRecords.reduce((s, r) => s + r.refused, 0);
+
+      const pDel = Math.round((del / grandTotal) * 100);
+      const pMis = Math.round((mis / grandTotal) * 100);
+      const pRef = Math.round((ref / grandTotal) * 100);
+
+      const text = 
+`🗳 *СВОДНЫЙ РАПОРТ ПО ОБХОДУ*
+📍 Регион: *${currentUser.region || 'Павлодарская область'}*
+🏛️ УИК: *№${currentUser.uik || '---'}*
+👤 Член комиссии: *${currentUser.name || 'Обходчик'}*
+📅 Дата: ${new Date().toLocaleDateString('ru-RU')}
+-----------------------------
+🏠 Всего домов внесено: *${currentUikRecords.length}*
+📬 Всего бланков: *${grandTotal}*
+-----------------------------
+✅ Вручено лично в руки: *${del}* (${pDel}%)
+🚪 Не было дома: *${mis}* (${pMis}%)
+🚫 Отказ от получения: *${ref}* (${pRef}%)
+-----------------------------
+⚠️ Бланки строго передаются лично в руки под роспись.`;
+
+      copyReportText(text);
+    }
+
+    function generateDebtReport() {
+      const currentUikRecords = currentUser.uik ? records.filter(r => r.uik == currentUser.uik) : records;
+      const debtRecords = currentUikRecords.filter(r => (r.missing || 0) > 0);
+
+      if (debtRecords.length === 0) {
+        alert('Отлично! Долгов по повторному обходу нет (все бланки вручены или оформлен отказ).');
+        return;
+      }
+
+      const totalDebtBlanks = debtRecords.reduce((s, r) => s + r.missing, 0);
+
+      let text = 
+`⚠️ *СПИСОК ДОЛГОВ (ПОВТОРНЫЙ ОБХОД)*
+📍 Регион: *${currentUser.region || 'Павлодарская область'}*
+🏛️️ УИК: *№${currentUser.uik || '---'}*
+👤 Ответственный: *${currentUser.name || 'Обходчик'}*
+📅 Дата формирования: ${new Date().toLocaleDateString('ru-RU')}
+-----------------------------
+🚪 Адресов для повторного визита: *${debtRecords.length}*
+📬 Неврученных бланков (не было дома): *${totalDebtBlanks}*
+-----------------------------
+*СПИСОК АДРЕСОВ:*\n`;
+
+      debtRecords.forEach((r, idx) => {
+        const notePart = r.note ? ` [${r.note}]` : '';
+        text += `${idx + 1}. ул. ${r.street}, д. ${r.house} — *${r.missing} бланков*${notePart}\n`;
+      });
+
+      text += `-----------------------------\n💡 Рекомендуется провести повторный обход после 19:00.`;
+
+      copyReportText(text);
+    }
+
+    function copyReportText(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Рапорт скопирован в буфер обмена! Можете вставить в WhatsApp/Telegram.");
+        });
+      } else {
+        prompt("Скопируйте текст рапорта:", text);
+      }
+    }
+
+    function exportToCSV() {
+      const currentUikRecords = currentUser.uik ? records.filter(r => r.uik == currentUser.uik) : records;
+
+      if (currentUikRecords.length === 0) {
+        alert('Нет данных для выгрузки!');
+        return;
+      }
+
+      let csv = '\uFEFF';
+      csv += 'Дата;Время;Регион;УИК;Ответственный;Улица;Дом;Всего;Вручено в руки;Не было дома (Долг);Отказ;Теги;Заметка\n';
+
+      currentUikRecords.forEach(r => {
+        const tagsStr = (r.tags || []).join(', ');
+        const noteStr = (r.note || '').replace(/"/g, '""');
+        csv += `"${r.date}";"${r.time}";"${r.region}";"${r.uik}";"${r.agent}";"${r.street}";"${r.house}";${r.total};${r.delivered};${r.missing};${r.refused};"${tagsStr}";"${noteStr}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Обход_${currentUser.region}_УИК_${currentUser.uik}_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
